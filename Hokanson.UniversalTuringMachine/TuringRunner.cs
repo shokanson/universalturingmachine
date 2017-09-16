@@ -29,7 +29,7 @@ namespace Hokanson.UniversalTuringMachine
 
 		#region Events
 
-		public event TuringRunEvent RunEvent;
+		public event EventHandler<TuringRunEventArgs> RunEvent;
 
 		#endregion
 
@@ -41,7 +41,7 @@ namespace Hokanson.UniversalTuringMachine
 			{
 				_manualEvent.WaitOne();
 
-				ProcessEvent(TuringEvent.Run, null, null, ToString(), string.Empty);
+				ProcessEvent(TuringEvent.Run, null, null, ToString());
 
 				bool keepGoing = true;
 				while (keepGoing)
@@ -49,7 +49,7 @@ namespace Hokanson.UniversalTuringMachine
 					keepGoing = Step();
 				}
 
-				ProcessEvent(TuringEvent.Done, null, null, ToString(), string.Empty);
+				ProcessEvent(TuringEvent.Done, null, null, ToString());
 			}
 			catch (Exception e)
 			{
@@ -86,7 +86,7 @@ namespace Hokanson.UniversalTuringMachine
 					break;
 			}
 
-			ProcessEvent(TuringEvent.Step, s, a, ToString(), string.Empty);
+			ProcessEvent(TuringEvent.Step, s, a, ToString());
 
 			return ( a.Dir != Direction.Stop );
 		}
@@ -95,42 +95,16 @@ namespace Hokanson.UniversalTuringMachine
 
 		#region Object Overrides
 
-		public override string ToString()
-		{
-			var s = new StringBuilder(_input.ToString());
-			s.Append("\r\n");
-			for (int i = 0; i < _inputPos; ++i)
-				s.Append(' ');
-			s.Append('^');
-			return s.ToString();
-		}
+		public override string ToString() => $"{_input.ToString()}\r\n{new String(' ', _inputPos)}^";
 
 		#endregion
 
 		#region Private Methods
 
-		private void ProcessEvent(TuringEvent te, State s, Action a, string input, string error)
-		{
-			TuringRunEvent tre = RunEvent;
-			if (tre != null)
-			{
-				tre(this, new TuringRunEventArgs(te, s, a, input, error));
-			}
-		}
+		private void ProcessEvent(TuringEvent te, State s, Action a, string input) => ProcessEvent(te, s, a, input, null);
+
+		private void ProcessEvent(TuringEvent te, State s, Action a, string input, string error) => RunEvent?.Invoke(this, new TuringRunEventArgs(te, s, a, input, error));
 
 		#endregion
 	}
 }
-
-/*
-$Log: /Hokanson.UniversalTuringMachine/TuringRunner.cs $ $NoKeyWords:$
- * 
- * 2     7/04/07 2:27a Sean
- * refactoring to remove potential race condition; making members readonly
- * 
- * 1     2/17/07 1:17a Sean
- * moving to own assembly
- * 
- * 3     1/23/07 11:28p Sean
- * results of ReSharper analysis
-*/

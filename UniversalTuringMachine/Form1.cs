@@ -1,8 +1,7 @@
 using System;
-using System.Windows.Forms;
 using System.IO;
 using System.Threading;
-
+using System.Windows.Forms;
 using Hokanson.UniversalTuringMachine;
 
 namespace UniversalTuringMachine
@@ -47,16 +46,16 @@ namespace UniversalTuringMachine
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if (components != null) 
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		#region Windows Form Designer generated code
@@ -217,10 +216,7 @@ namespace UniversalTuringMachine
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main() 
-		{
-			Application.Run(new Form1());
-		}
+		static void Main() => Application.Run(new Form1());
 
 		private void openUTMFile_Click(object sender, EventArgs e)
 		{
@@ -259,15 +255,15 @@ namespace UniversalTuringMachine
 					machine.LoadSpec(new StreamReader(_utmFile).ReadToEnd());
 
 					var runner = new TuringRunner(machine, new StreamReader(_inputFile).ReadToEnd(), _manualEvent);
-				    runner.RunEvent += (snder, args) => BeginInvoke(new TuringRunEvent(OnRunEvent), new[] {snder, args});
+					runner.RunEvent += (snder, args) => BeginInvoke(new EventHandler<TuringRunEventArgs>(OnRunEvent), new[] { snder, args });
 					_turingRunnerThread = new Thread(runner.Run)
 					{
-					    Priority = ThreadPriority.BelowNormal,
-					    Name = "Turing Machine Runner"
+						Priority = ThreadPriority.BelowNormal,
+						Name = "Turing Machine Runner"
 					};
-				    _turingRunnerThread.Start();	// starts in waiting mode
+					_turingRunnerThread.Start();  // starts in waiting mode
 
-					_manualEvent.Set();	// release the thread
+					_manualEvent.Set();  // release the thread
 				}
 				catch (Exception ex)
 				{
@@ -308,7 +304,7 @@ namespace UniversalTuringMachine
 					break;
 				case TuringEvent.Step:
 					if (showStatesChk.Checked)
-						WriteOutput(string.Format("{0}:{1}--->{2}:{3}:{4}", e.State.Num, e.State.Input, e.action.ChangeStateTo, e.action.ChangeTapeTo, e.action.Dir));
+						WriteOutput($"{e.State.Num}:{e.State.Input}--->{e.Action.ChangeStateTo}:{e.Action.ChangeTapeTo}:{e.Action.Dir}");
 					if (showTapeChk.Checked)
 						WriteOutput(e.Input);
 					break;
@@ -330,16 +326,13 @@ namespace UniversalTuringMachine
 			}
 		}
 
-		private void ClearOutput()
-		{
-			outputTxt.Clear();
-		}
+		private void ClearOutput() => outputTxt.Clear();
 
 		private void WriteOutput(string s)
 		{
-			outputTxt.AppendText(s);
+			outputTxt.AppendText(s ?? string.Empty);
 			outputTxt.AppendText("\r\n");
-			outputTxt.Select(outputTxt.Text.Length, 0);
+			outputTxt.SelectionStart = outputTxt.Text.Length;
 			outputTxt.ScrollToCaret();
 		}
 
@@ -381,13 +374,3 @@ namespace UniversalTuringMachine
 		}
 	}
 }
-
-/*
-$Log: /UniversalTuringMachine/Form1.cs $ $NoKeyWords:$
- * 
- * 3     2/17/07 1:20a Sean
- * moving TuringMachine class to own assembly
- * 
- * 2     1/23/07 11:28p Sean
- * results of ReSharper analysis
-*/

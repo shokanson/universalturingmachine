@@ -7,7 +7,7 @@ namespace Hokanson.UniversalTuringMachine
 		#region Construction
 
 		public StateAlreadyDefinedException(State s, Action a)
-			: base(string.Format("state already defined: {0} --> {1}", s, a))
+			: base($"state already defined: {s} --> {a}")
 		{}
 
 		#endregion
@@ -40,19 +40,9 @@ namespace Hokanson.UniversalTuringMachine
 		#region Construction
 
 		public UndefinedStateException(State s)
-			: base(string.Format("undefined state: {0}", s))
+			: base($"undefined state: {s}")
 		{}
 
 		#endregion
 	}
 }
-
-/*
-$Log: /Hokanson.UniversalTuringMachine/Exceptions.cs $ $NoKeyWords:$
- * 
- * 1     2/17/07 1:17a Sean
- * moving to own assembly
- * 
- * 3     1/23/07 11:28p Sean
- * results of ReSharper analysis
-*/

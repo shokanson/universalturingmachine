@@ -55,10 +55,3 @@ using System.Reflection;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-
-/*
-$Log: /UniversalTuringMachine/AssemblyInfo.cs $ $NoKeyWords:$
- * 
- * 2     1/23/07 11:28p Sean
- * results of ReSharper analysis
-*/

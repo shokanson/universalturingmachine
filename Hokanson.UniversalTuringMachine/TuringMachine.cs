@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -9,13 +9,13 @@ namespace Hokanson.UniversalTuringMachine
 	{
 		#region Implementation
 
-		private readonly Hashtable _specification = new Hashtable();
-        private bool _specLoaded;
-        private readonly Regex _stopRegex = new Regex("11110");
-        private readonly Regex _leftRegex = new Regex("1110");
-        private readonly Regex _rightRegex = new Regex("110");
-        private readonly Regex _oneRegex = new Regex("10");
-        private readonly Regex _zeroRegex = new Regex("0");
+		private readonly Dictionary<State, Action> _specification = new Dictionary<State, Action>();
+		private bool _specLoaded;
+		private readonly Regex _stopRegex = new Regex("11110");
+		private readonly Regex _leftRegex = new Regex("1110");
+		private readonly Regex _rightRegex = new Regex("110");
+		private readonly Regex _oneRegex = new Regex("10");
+		private readonly Regex _zeroRegex = new Regex("0");
 
 		#endregion
 
@@ -24,9 +24,9 @@ namespace Hokanson.UniversalTuringMachine
 		public Action GetAction(State s)
 		{
 			if (!_specLoaded) throw new SpecNotLoadedException();
-            if (!_specification.ContainsKey(s)) throw new UndefinedStateException(s);
-            
-            return (Action)_specification[s];
+			if (!_specification.TryGetValue(s, out Action a)) throw new UndefinedStateException(s);
+
+			return a;
 		}
 
 		public void LoadSpec(string specStr)
@@ -36,7 +36,7 @@ namespace Hokanson.UniversalTuringMachine
 			int pos = 0, oldPos = 0;
 			uint currState = 0;
 			char currInput = '1';
-			string spec = specStr + "110";	// "110" removed for 'optimization', so
+			string spec = specStr + "110";   // "110" removed for 'optimization', so
 														// add it back
 			while (pos < spec.Length)
 			{
@@ -72,7 +72,7 @@ namespace Hokanson.UniversalTuringMachine
 				}
 
 				pos = dirPos;
-				StateChar sc = GetStateAndChar(spec.Substring(oldPos, pos-oldPos));
+				StateChar sc = GetStateAndChar(spec.Substring(oldPos, pos - oldPos));
 
 				var s = new State(currState, currInput);
 				var a = new Action(sc.State, sc.C, dir);
@@ -81,13 +81,12 @@ namespace Hokanson.UniversalTuringMachine
 
 				pos += matchLen;
 				oldPos = pos;
-				currInput = ( currInput == '0' ? '1' : '0' );
+				currInput = (currInput == '0' ? '1' : '0');
 				if (currInput == '0')
 				{
 					currState++;
 				}
 			}
-
 
 			_specLoaded = true;
 		}
@@ -102,9 +101,8 @@ namespace Hokanson.UniversalTuringMachine
 
 			foreach (State s in _specification.Keys)
 			{
-				var a = (Action)_specification[s];
-				sb.Append(string.Format("{0}:{1}--->{2}:{3}:{4}", s.Num, s.Input, a.ChangeStateTo, a.ChangeTapeTo, a.Dir));
-				sb.Append("\r\n");
+				var a = _specification[s];
+				sb.Append($"{s.Num}:{s.Input}--->{a.ChangeStateTo}:{a.ChangeTapeTo}:{a.Dir}\r\n");
 			}
 
 			return sb.ToString();
@@ -135,7 +133,7 @@ namespace Hokanson.UniversalTuringMachine
 					pos += match.Length;
 					continue;
 				}
-				
+
 				match = _zeroRegex.Match(str, pos);
 				if (match.Success)
 				{
@@ -160,8 +158,8 @@ namespace Hokanson.UniversalTuringMachine
 			}
 			else
 			{
-				sc.C = binStr[binStr.Length-1];
-				sc.State = Convert.ToUInt32(binStr.Substring(0, binStr.Length-1), 2);
+				sc.C = binStr[binStr.Length - 1];
+				sc.State = Convert.ToUInt32(binStr.Substring(0, binStr.Length - 1), 2);
 			}
 
 			return sc;
@@ -170,20 +168,10 @@ namespace Hokanson.UniversalTuringMachine
 		private void AddAction(State s, Action a)
 		{
 			if (_specification.ContainsKey(s)) throw new StateAlreadyDefinedException(s, a);
-			
-            _specification.Add(s, a);
+
+			_specification[s] = a;
 		}
 
 		#endregion
 	}
 }
-
-/*
-$Log: /Hokanson.UniversalTuringMachine/TuringMachine.cs $ $NoKeyWords:$
- * 
- * 1     2/17/07 1:17a Sean
- * moving to own assembly
- * 
- * 3     1/23/07 11:28p Sean
- * results of ReSharper analysis
-*/
