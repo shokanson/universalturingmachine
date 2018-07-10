@@ -14,7 +14,7 @@ UniversalTuringMachine/machines contains these files:
 * Inputs for machines
     * For the Universal Turing Machine (UTM.txt):
         * "utm UNPlus1 and 3 input.txt": the UNplus1 machine, and the decimal value 3 in _unary_ format
-        * "utm XMplus1 and 0 input.txt": the XNplus1 machine, and the decimal value 0 in _expanded binary_ format
+        * "utm XMplus1 and 0 input.txt": the XNplus1 machine, and the value 0 in _expanded binary_ format
     * For non-universal machines
         * "input 3 for UNplus1.txt": the decimal value 3 in _unary_ format, to be used by the UNplus1 machine
         * "input 0 for XNplus1.txt": the value 0 in _expanded binary_ format, to be used by the XNplus1 machine
