@@ -43,11 +43,7 @@ namespace Hokanson.UniversalTuringMachine
 
 				ProcessEvent(TuringEvent.Run, null, null, ToString());
 
-				bool keepGoing = true;
-				while (keepGoing)
-				{
-					keepGoing = Step();
-				}
+				while (Step()) {}
 
 				ProcessEvent(TuringEvent.Done, null, null, ToString());
 			}
