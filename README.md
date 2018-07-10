@@ -13,12 +13,12 @@ UniversalTuringMachine/machines contains these files:
         * "tm XNplus1.txt": a Turing Machine for incrementing a number by one, where that number is encoded in Penrose's _expanded binary_ format
 * Inputs for machines
     * For the Universal Turing Machine (UTM.txt):
-        * "utm UNPlus1 and 3 input.txt": the UNplus1 machine, and the value 3 in _unary_ format
-        * "utm XMplus1 and 0 input.txt": the XNplus1 machine, and the value 0 in _expanded binary_ format
+        * "utm UNPlus1 and 3 input.txt": the UNplus1 machine, and the decimal value 3 in _unary_ format
+        * "utm XMplus1 and 0 input.txt": the XNplus1 machine, and the decimal value 0 in _expanded binary_ format
     * For non-universal machines
-        * "input 3 for UNplus1.txt": the value 3 in _unary_ format, to be used by the UNplus1 machine
+        * "input 3 for UNplus1.txt": the decimal value 3 in _unary_ format, to be used by the UNplus1 machine
         * "input 0 for XNplus1.txt": the value 0 in _expanded binary_ format, to be used by the XNplus1 machine
-        * "input 167 for XNplus1.txt": the value 167 in _expanded binary_ format, to be used by the XNplus1 machine
+        * "input 167 for XNplus1.txt": the decimal value 167 in _expanded binary_ format, to be used by the XNplus1 machine
 
 # Trying Things Out
 ![](main.png?raw=true)
