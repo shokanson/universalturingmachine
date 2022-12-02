@@ -14,7 +14,7 @@ namespace UniversalTuringMachine
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private readonly System.ComponentModel.Container components = null;
 		private TextBox utmFileTxt;
 		private TextBox inputFileTxt;
 		private Button pauseResumeBtn;
@@ -50,10 +50,7 @@ namespace UniversalTuringMachine
 		{
 			if (disposing)
 			{
-				if (components != null)
-				{
-					components.Dispose();
-				}
+				components?.Dispose();
 			}
 			base.Dispose(disposing);
 		}

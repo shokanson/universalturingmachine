@@ -91,7 +91,7 @@ namespace Hokanson.UniversalTuringMachine
 
 		#region Object Overrides
 
-		public override string ToString() => $"{_input.ToString()}\r\n{new String(' ', _inputPos)}^";
+		public override string ToString() => $"{_input}\r\n{new String(' ', _inputPos)}^";
 
 		#endregion
 

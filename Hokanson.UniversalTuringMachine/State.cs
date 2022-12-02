@@ -23,10 +23,8 @@ namespace Hokanson.UniversalTuringMachine
 
 		public override bool Equals(object obj)
 		{
-			var state = obj as State;
-
-			return (state != null && Num == state.Num && Input == state.Input);
-		}
+            return (obj is State state && Num == state.Num && Input == state.Input);
+        }
 
 		public override int GetHashCode() => (int)Num + 41 * Input.GetHashCode();
 
